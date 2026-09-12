@@ -4,51 +4,42 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Rembo Quotation Generator — demo Arya</title>
 <style>
-body{font-family:system-ui;max-width:720px;margin:24px auto;padding:0 16px}
-.card{border:1px solid #ddd;border-radius:12px;padding:16px;margin:12px 0}
-label{display:block;margin:8px 0 4px}select,input{width:100%;padding:8px}
-button{padding:10px 14px;margin-top:10px;cursor:pointer}
-#out{white-space:pre-line;background:#f7f7f7;padding:12px;border-radius:8px}
-#chat{border:1px solid #ddd;border-radius:8px;padding:8px;min-height:120px;margin-top:8px}
-.small{color:#666;font-size:13px}
+:root{--brand:#d21f26;--dark:#161616;--bg:#f6f5f3;--card:#fff;--wa:#1faa55}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui;background:var(--bg);color:#222}
+header{background:var(--dark);color:#fff;padding:28px 16px;text-align:center}
+header .logo{font-weight:800;letter-spacing:1px;font-size:22px}
+header .logo span{color:var(--brand)}
+.wrap{max-width:860px;margin:-18px auto 40px;padding:0 16px}
+.card{background:var(--card);border-radius:14px;padding:18px;margin:14px 0;box-shadow:0 4px 18px rgba(0,0,0,.06)}
+label{display:block;margin:10px 0 4px;font-weight:600;font-size:14px}
+select,input{width:100%;padding:10px;border:1px solid #ddd;border-radius:10px}
+.btn{border:0;border-radius:10px;padding:12px 16px;font-weight:700;cursor:pointer;margin:8px 6px 0 0}
+.btn-brand{background:var(--brand);color:#fff}.btn-dark{background:var(--dark);color:#fff}.btn-wa{background:var(--wa);color:#fff}
+#out{white-space:pre-line;background:#111;color:#fff;padding:14px;border-radius:10px;margin-top:12px}
+.small{color:#777;font-size:13px}
 </style>
 </head>
 <body>
-<h1>Rembo Quotation (demo)</h1>
-<p class="small">Data dari landing.remboprinting.com/pricelist. Semua ESTIMASI, final via WA. Oleh Arya.</p>
-<div class="card">
-<label>Produk</label><select id="prod"></select>
+<header><div class="logo">REMBO<span>PRINTING</span></div><p>Quotation Generator (demo) — oleh Arya</p></header>
+<div class="wrap">
+<div class="card"><label>Produk</label><select id="prod"></select>
 <label>Qty</label><input id="qty" type="number" value="2" min="1">
-<label>Nama kamu</label><input id="nama" placeholder="cth: Budi">
-<button onclick="hitung()">Hitung estimasi</button>
-<button onclick="cetak()">Cetak / PDF</button>
-<div id="out" style="margin-top:10px">Pilih produk lalu Hitung.</div>
-<a id="wa" href="#" target="_blank"><button>Kirim ke WA Rembo</button></a>
-</div>
-<div class="card">
-<h3>Tanya harga cepat</h3>
-<input id="q" placeholder="cth: mug berapa?"><button onclick="tanya()">Tanya</button>
-<div id="chat"></div>
+<label>Nama</label><input id="nama" placeholder="cth: Budi">
+<button class="btn btn-brand" onclick="hitung()">Hitung estimasi</button><button class="btn btn-dark" onclick="cetak()">Cetak / PDF</button>
+<a id="wa" href="#" target="_blank"><button class="btn btn-wa">Kirim ke WA Rembo</button></a>
+<div id="out">Pilih produk lalu Hitung.</div></div>
+<div class="card"><input id="q" placeholder="cth: mug berapa?"><button class="btn btn-dark" onclick="tanya()">Tanya</button><div id="chat"></div></div>
 </div>
 <script src="./data.js"></script>
 <script src="./quote.js"></script>
 <script>
-const sel = document.getElementById('prod');
-window.PRODUCTS.forEach(p => { const o = document.createElement('option'); o.value = p.id; o.textContent = `${p.name} — mulai Rp${p.base.toLocaleString('id-ID')}/${p.unit}`; sel.appendChild(o); });
-function rp(n){ return "Rp" + n.toLocaleString("id-ID"); }
-function hitung(){
-  const r = window.calcQuote({ productId: sel.value, qty: document.getElementById('qty').value });
-  const nama = document.getElementById('nama').value;
-  if (!r.ok) { document.getElementById('out').textContent = "GAGAL: " + r.message; }
-  else { document.getElementById('out').textContent = `${r.product} x${r.qty} ${r.unit}\nSatuan: ${rp(r.base)}\nESTIMASI TOTAL: ${rp(r.total)}\n${r.note}`; }
-  document.getElementById('wa').href = window.buildWA(r, nama);
-}
-function cetak(){ window.print(); }
-function tanya(){
-  const q = document.getElementById('q').value;
-  const a = window.answerRembo(q);
-  document.getElementById('chat').innerHTML += `<div><b>Kamu:</b> ${q}</div><div>${a}</div><hr>`;
-}
+const sel=document.getElementById('prod');
+window.PRODUCTS.forEach(p=>{const o=document.createElement('option');o.value=p.id;o.textContent=`${p.name} — mulai Rp${p.base.toLocaleString('id-ID')}/${p.unit}`;sel.appendChild(o);});
+function rp(n){return "Rp"+n.toLocaleString("id-ID");}
+function hitung(){const r=window.calcQuote({productId:sel.value,qty:document.getElementById('qty').value});const nama=document.getElementById('nama').value;const el=document.getElementById('out');if(!r.ok){el.textContent="GAGAL: "+r.message;}else{el.textContent=`${r.product} x${r.qty}\nESTIMASI: ${rp(r.total)}\n${r.note}`;}document.getElementById('wa').href=window.buildWA(r,nama);}
+function cetak(){window.print();}
+function tanya(){const q=document.getElementById('q').value;const a=window.answerRembo(q);document.getElementById('chat').innerHTML+=`<div><b>Kamu:</b> ${q}</div><div>${a}</div><hr>`;}
+hitung();
 </script>
 </body>
 </html>
