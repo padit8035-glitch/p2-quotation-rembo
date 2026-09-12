@@ -2,44 +2,63 @@
 <html lang="id">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Rembo Quotation Generator — demo Arya</title>
+<title>Rembo Quotation — demo Arya</title>
 <style>
-:root{--brand:#d21f26;--dark:#161616;--bg:#f6f5f3;--card:#fff;--wa:#1faa55}
-*{box-sizing:border-box}body{margin:0;font-family:system-ui;background:var(--bg);color:#222}
-header{background:var(--dark);color:#fff;padding:28px 16px;text-align:center}
-header .logo{font-weight:800;letter-spacing:1px;font-size:22px}
-header .logo span{color:var(--brand)}
-.wrap{max-width:860px;margin:-18px auto 40px;padding:0 16px}
-.card{background:var(--card);border-radius:14px;padding:18px;margin:14px 0;box-shadow:0 4px 18px rgba(0,0,0,.06)}
-label{display:block;margin:10px 0 4px;font-weight:600;font-size:14px}
-select,input{width:100%;padding:10px;border:1px solid #ddd;border-radius:10px}
-.btn{border:0;border-radius:10px;padding:12px 16px;font-weight:700;cursor:pointer;margin:8px 6px 0 0}
-.btn-brand{background:var(--brand);color:#fff}.btn-dark{background:var(--dark);color:#fff}.btn-wa{background:var(--wa);color:#fff}
-#out{white-space:pre-line;background:#111;color:#fff;padding:14px;border-radius:10px;margin-top:12px}
-.small{color:#777;font-size:13px}
+:root{--bg:#0c0d10;--panel:#14161b;--line:#ffffff1c;--txt:#f2f3f5;--mut:#a7adb6;--gold:#ffd166;--brand:#d21f26;--wa:#1faa55}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--txt);font-family:system-ui}
+.nav{position:sticky;top:0;background:#0c0d10ee;border-bottom:1px solid var(--line)}
+.nav .in{max-width:1080px;margin:0 auto;padding:12px 16px;display:flex;justify-content:space-between}
+.logo{font-weight:800}.logo span{color:var(--brand)}
+.btn{border:0;border-radius:10px;padding:12px 18px;font-weight:800;cursor:pointer}
+.b-gold{background:var(--gold);color:#111}.b-wa{background:var(--wa);color:#fff}.b-ghost{background:transparent;color:var(--txt);border:1px solid var(--line)}
+.hero{max-width:1080px;margin:0 auto;padding:56px 16px 30px}
+.hero h1{font-size:clamp(30px,5vw,58px);line-height:1.02;margin:10px 0}
+.hero p{color:var(--mut);max-width:62ch}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:22px}
+@media(max-width:700px){.stats{grid-template-columns:1fr}}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px 90px}
+.term{background:var(--panel);border:1px solid var(--line);border-radius:16px;margin-top:18px}
+.grid{display:grid;grid-template-columns:1.15fr .85fr;gap:12px;padding:14px}
+@media(max-width:860px){.grid{grid-template-columns:1fr}}
+input,select{width:100%;padding:11px;border-radius:10px;border:1px solid var(--line);background:#0f1114;color:var(--txt)}
+.prod{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+@media(max-width:560px){.prod{grid-template-columns:repeat(2,1fr)}}
+.p{border:1px solid var(--line);border-radius:12px;padding:10px;cursor:pointer;background:#101216}
+.p.sel{border-color:var(--gold)}
+#out{background:#0a0b0d;border:1px solid var(--line);border-radius:12px;padding:14px;min-height:110px}
+.sticky{position:fixed;left:0;right:0;bottom:0;background:#0c0d10ee;border-top:1px solid var(--line);padding:10px;display:flex;gap:10px;justify-content:center}
+#toast{position:fixed;left:50%;bottom:76px;transform:translateX(-50%);background:#fff;color:#111;padding:10px 16px;border-radius:999px;opacity:0;transition:.25s;font-weight:700}
+#toast.show{opacity:1}
 </style>
 </head>
 <body>
-<header><div class="logo">REMBO<span>PRINTING</span></div><p>Quotation Generator (demo) — oleh Arya</p></header>
-<div class="wrap">
-<div class="card"><label>Produk</label><select id="prod"></select>
-<label>Qty</label><input id="qty" type="number" value="2" min="1">
-<label>Nama</label><input id="nama" placeholder="cth: Budi">
-<button class="btn btn-brand" onclick="hitung()">Hitung estimasi</button><button class="btn btn-dark" onclick="cetak()">Cetak / PDF</button>
-<a id="wa" href="#" target="_blank"><button class="btn btn-wa">Kirim ke WA Rembo</button></a>
-<div id="out">Pilih produk lalu Hitung.</div></div>
-<div class="card"><input id="q" placeholder="cth: mug berapa?"><button class="btn btn-dark" onclick="tanya()">Tanya</button><div id="chat"></div></div>
-</div>
+<div class="nav"><div class="in"><div class="logo">REMBO<span>PRINTING</span></div><a href="#hitung"><button class="btn b-gold">Hitung Sekarang</button></a></div></div>
+<div class="hero"><div style="color:var(--gold);font-size:12px;letter-spacing:.2em">PRICELIST REAL • ESTIMASI 10 DETIK</div>
+<h1>Harga cetak jelas sebelum chat WA.</h1>
+<p>Demo Arya. Pilih produk, atur qty, keluar estimasi + WA otomatis. Final via WA.</p>
+<div class="stats"><div class="stat"><b>12</b><br><span>produk real</span></div><div class="stat"><b>10 dtk</b><br><span>estimasi instan</span></div><div class="stat"><b>6/6</b><br><span>test hijau</span></div></div></div>
+<div class="wrap" id="hitung"><div class="term"><div class="grid">
+<div><input id="cari" placeholder="Cari: mug, banner..." style="margin-bottom:8px"><div id="plist" class="prod"></div>
+<div style="display:flex;gap:8px;margin-top:10px"><button onclick="step(-1)">−</button><input id="qty" type="number" value="2" style="text-align:center"><button onclick="step(1)">+</button></div>
+<input id="nama" placeholder="Nama kamu" style="margin-top:8px"></div>
+<div><div id="out">Pilih produk.</div><a id="wa" href="#" target="_blank"><button class="btn b-wa" style="width:100%;margin-top:10px">Kirim WA</button></a>
+<input id="q" placeholder="mug berapa?" style="margin-top:10px"><button class="btn b-gold" onclick="tanya()">Tanya</button><div id="chat"></div></div>
+</div></div></div>
+<div class="sticky"><span id="stotal">Estimasi: —</span><a id="wa2" href="#" target="_blank"><button class="btn b-wa">Kirim WA</button></a></div>
+<div id="toast"></div>
 <script src="./data.js"></script>
 <script src="./quote.js"></script>
 <script>
-const sel=document.getElementById('prod');
-window.PRODUCTS.forEach(p=>{const o=document.createElement('option');o.value=p.id;o.textContent=`${p.name} — mulai Rp${p.base.toLocaleString('id-ID')}/${p.unit}`;sel.appendChild(o);});
+let cur=null;const plist=document.getElementById('plist'),sel=document.createElement('select');sel.style.display='none';document.body.appendChild(sel);
+function render(f){plist.innerHTML='';sel.innerHTML='';window.PRODUCTS.filter(p=>!f||(p.name+' '+p.keywords.join(' ')).toLowerCase().includes(f.toLowerCase())).forEach((p,i)=>{const o=document.createElement('option');o.value=p.id;o.textContent=p.name;sel.appendChild(o);const d=document.createElement('div');d.className='p'+(cur===p.id||(!cur&&i===0)?' sel':'');d.innerHTML=`<b>${p.name}</b><br><small>Rp${p.base.toLocaleString('id-ID')}</small>`;d.onclick=()=>{cur=p.id;sel.value=p.id;render(document.getElementById('cari').value);hitung(false);};plist.appendChild(d);});if(!cur&&sel.options[0])cur=sel.options[0].value;sel.value=cur;}
 function rp(n){return "Rp"+n.toLocaleString("id-ID");}
-function hitung(){const r=window.calcQuote({productId:sel.value,qty:document.getElementById('qty').value});const nama=document.getElementById('nama').value;const el=document.getElementById('out');if(!r.ok){el.textContent="GAGAL: "+r.message;}else{el.textContent=`${r.product} x${r.qty}\nESTIMASI: ${rp(r.total)}\n${r.note}`;}document.getElementById('wa').href=window.buildWA(r,nama);}
-function cetak(){window.print();}
-function tanya(){const q=document.getElementById('q').value;const a=window.answerRembo(q);document.getElementById('chat').innerHTML+=`<div><b>Kamu:</b> ${q}</div><div>${a}</div><hr>`;}
-hitung();
+function toast(t){const e=document.getElementById('toast');e.textContent=t;e.classList.add('show');clearTimeout(e._h);e._h=setTimeout(()=>e.classList.remove('show'),1500);}
+function hitung(m){const r=window.calcQuote({productId:cur||sel.value,qty:document.getElementById('qty').value});const el=document.getElementById('out');if(!r.ok){el.textContent="GAGAL: "+r.message;}else{el.textContent=`${r.product} x${r.qty} = ${rp(r.total)}`;if(m)toast('Estimasi: '+rp(r.total));}const h=window.buildWA(r,document.getElementById('nama').value);document.getElementById('wa').href=h;document.getElementById('wa2').href=h;document.getElementById('stotal').textContent=r.ok?'Estimasi: '+rp(r.total):'Estimasi: —';}
+function step(d){const e=document.getElementById('qty');e.value=Math.max(1,(Number(e.value)||1)+d);hitung(false);}
+function tanya(){const q=document.getElementById('q').value;document.getElementById('chat').innerHTML+=`<div>Kamu: ${q}</div><div>${window.answerRembo(q)}</div><hr>`;}
+document.getElementById('cari').oninput=e=>render(e.target.value);
+render('');hitung(false);
 </script>
 </body>
 </html>
