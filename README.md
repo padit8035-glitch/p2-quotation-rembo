@@ -6,6 +6,8 @@ A self-serve quotation tool for a printing business. The site used to advertise 
 
 **Pure front-end.** No backend, no API keys, no build step.
 
+![Quote calculator](docs/preview.png)
+
 ## How it works
 
 ```
