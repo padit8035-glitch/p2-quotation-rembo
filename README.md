@@ -8,6 +8,8 @@ A self-serve quotation tool for a printing business. The site used to advertise 
 
 ![Quote calculator](docs/preview.png)
 
+**Live demo:** https://padit8035-glitch.github.io/p2-quotation-rembo/
+
 ## How it works
 
 ```
