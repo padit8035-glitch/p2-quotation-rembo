@@ -1,5 +1,7 @@
 # Printing Quote Generator
 
+[![test](https://github.com/padit8035-glitch/p2-quotation-rembo/actions/workflows/test.yml/badge.svg)](https://github.com/padit8035-glitch/p2-quotation-rembo/actions/workflows/test.yml) [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 A self-serve quotation tool for a printing business. The site used to advertise prices as "starting from" and force every real quote through a WhatsApp conversation, so I built the calculator: pick a product, set a quantity, get a line-item total and a pre-filled WhatsApp message.
 
 **Pure front-end.** No backend, no API keys, no build step.
